@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'episode1';
+    src: url('font/EPISODE1.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+body{
+    background: blac;
+}
+
+//entête du site
+header{
+    display: flex;
+    width: 100%;
+    
+}
+#logoSW{
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+   
+}
+#titre{
+    color:white; 
+    font-size: 35px;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    font-family: 'episode1';
+
+}
+
+//tableau
+
+table{
+ background: url(images/fondSW.png) fixed;
+}
