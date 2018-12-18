@@ -8,7 +8,7 @@
 
 
 body{
-    background: blac;
+    background: black;
 }
 
 //entête du site
@@ -37,6 +37,10 @@ header{
 
 //tableau
 
-table{
- background: url(images/fondSW.png) fixed;
+table, tr, td{
+   background: url(images/fondSW.png) fixed;
+   border: 1px solid white;
+   width: 30px;
+   height: 30px;
+   border-collapse: collapse;
 }
