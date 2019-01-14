@@ -21,11 +21,11 @@ function LignesClic(incre){
         /*nous cherchons si la cellule suivante est vide et si c'est vrai cette cellule est cliquable sinon 
         // il faut déterminer si cette cellule est occupée et par quoi*/
 
-    if($('table  tr').eq(numlign).find('td').eq(numCell).html() == ""){
+    if($("tr:eq("+numlign+") td:eq("+numCell+")").html() == ""){
 
-        $('table  tr').eq(numlign).find('td').eq(numCell).css('background', 'url(images/fondSWgrey.png)');
+        $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png)');
 
-        $('table  tr').eq(numlign).find('td').eq(numCell).click(function(){
+        $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
             $(this).append($("#xwing"));
             $('td').css('background', 'url(images/fondSW.png)');
             LignesClic(+1);
