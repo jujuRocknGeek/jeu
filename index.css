@@ -11,6 +11,11 @@ body{
     background: black;
 }
 
+section{
+    display: flex;
+    margin: 10px;
+}
+
 /*entête du site*/
 header{
   
@@ -36,6 +41,8 @@ header{
 
 #tab{
     display: flex;
+    width: 50%;
+    justify-content: center;
 }
 #tabJeu
 {
@@ -45,7 +52,7 @@ header{
 
 td
 {
-    border: 1px solid yellow;
+    border: 1px solid rgba(131, 131, 131, 0.1);
     width: 60px;
     height: 60px;  
 }
@@ -54,8 +61,31 @@ td
 tr
 {
     background: url(images/fondSW.png) fixed;
-    border: 0px solid yellow;
+    border: 0px solid rgba(131, 131, 131, 0.5) ;
     width: 60px;
     height: 60px;
 }
+
+/*joueurs*/
+
+#players{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    border: 1px solid grey;
+    margin: 30px;
+}
+
+.joueur{
+    display: flex;
+    height: 200px;
+    width: 90%;
+    border: 1px solid grey;
+    margin: 30px;
+}
+
+.imgPilot{
+    height: 150px; 
+}
+
 
