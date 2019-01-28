@@ -138,22 +138,40 @@
             </tr>
         </table>
     </div>
+<div id="sectionJoueur">
+    <div id="messages">
+        <p id="mess"></p>
+        <button id='b1'>suivant</button>
+    </div>
 
     <div id="players">
-        <div id="joueur1" class="joueur">
+        <div id="joueur" class="joueur1">
                 <img src="images/pilotXwingMin.jpg" alt="image pilote alliance" id="imgPilot1" class="imgPilot">
+            <div id="contenuJoueur">
+                <p id="txtInterface">Nom du vaisseau : <span id="nomV1"></span></p>
+                <p id="txtInterface">Puissance de Dégats : <span id="degats1"></span></p>
+                <p id="txtInterface">Points de Vies : <span id="pv1"></span></p>
+            </div>    
         </div>
-        <div id="joueur2" class="joueur">
+        <div id="joueur" class="joueur2">
                 <img src="images/pilotTieMin.jpg" alt="imge pilote empire" id="imgpilot2" class="imgPilot">
+            <div id="contenuJoueur">
+                <p id="txtInterface">Nom du vaisseau : <span id="nomV2"></span></p>
+                <p id="txtInterface">Puissance de Dégats : <span id="degats2"></span></p>
+                <p id="txtInterface">Points de Vies : <span id="pv2"></span></p>
+            </div>
         </div>
     </div>
+</div>
 </section>
 
 
    <script src= "jquery-3.3.1.js"></script>
    <script src="joueurs.js"></script>
    <script src="damier.js"></script>
-   <script src="deplacements.js"></script>
+   <script src="startGame.js"></script>
+   <script src="deplacementXw.js"></script>
+   <script src="deplacementTie.js"></script>
    
 </body>
 </html>

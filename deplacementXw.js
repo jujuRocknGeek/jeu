@@ -1,10 +1,29 @@
 'use strict';
-// on recupère la place du vaisseau
-function RecuperationPlacement(x){
-    var cellule = $(x).parent('td').index();
-    var ligne = $(x).parent(cellule).parent('tr').index();
-    return {ligne, cellule};
-};
+function Joueur1(){
+//on cherche a savoir si il y a une arme sur la case afin de la cacher pour ne pas avoir doublon avec vaisseau
+if($("tr:eq("+RecuperationPlacement("#xwing").ligne+") td:eq("+RecuperationPlacement("#xwing").cellule+")").children().attr("id") == "arm"){
+let arme = $("tr:eq("+RecuperationPlacement("#xwing").ligne+") td:eq("+RecuperationPlacement("#xwing").cellule+")").children().attr("class");
+           
+    switch(arme){
+        case "arm1":
+            $(".arm1").hide();
+            break;
+        case "arm2" :
+        $(".arm2").hide();
+            break;
+        case "arm3" :
+        $(".arm").hide();
+            break;
+        case "arm4":
+        $(".arm4").hide();
+            break;
+        case "arm5" :
+        $(".arm5").hide();
+            break;
+        default : 
+            return;
+    }
+}
 
 // fonction qui selectionne les cases cliquables
 function LignesClic(vaisseau, incre){ 
@@ -14,7 +33,6 @@ function LignesClic(vaisseau, incre){
     let numCell = RecuperationPlacement(vaisseau).cellule;
 
     for(i=1; i<=nbTour; i++){
-
             numlign += incre;
             if(numlign>9 || numlign <0){
                 return;
@@ -36,12 +54,11 @@ function LignesClic(vaisseau, incre){
             console.log($(this).append($(vaisseau)));
             $('td').css('background', 'url(images/fondSW.png) fixed');
             $('td').off('click');
-            LignesClic("#xwing", 1);
-            LignesClic("#xwing", -1);
-            LignesHorzClic("#xwing", 1);
-            LignesHorzClic("#xwing", -1);
+            Joueur2();
            });
    }
+
+   
     // case occuppée par le vaisseau ennemi
     else if ($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("id") === "xwing" || $("tr:eq("+numlign+") td:eq("+numCell+")").children().attr("id") === "tie"){
 
@@ -58,20 +75,21 @@ function LignesClic(vaisseau, incre){
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm1"){
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                //on vide la cellule et déplace notre vaisseau
                 $(this).empty();
                 $(this).append($(vaisseau));
-
-                if($(vaisseau).attr("class") === "ship1")
+                // changer  notre vaisseau en arme
+                if($(vaisseau).attr("class") === "shipXw1")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
 
+                //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -91,14 +109,12 @@ function LignesClic(vaisseau, incre){
                     default : 
                         return;
                 }
-                
+                // mettre le nouveau vaisseau
                 $(this).append(vaisseauIni.spriteXw);
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
             });
         }
 
@@ -108,15 +124,15 @@ function LignesClic(vaisseau, incre){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "ship")
+                if($(vaisseau).attr("class") === "shipXw")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship1")
+                else if($(vaisseau).attr("class") === "shipXw1")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);};
 
                 let arme = $(this).children().attr("class");
@@ -144,10 +160,8 @@ function LignesClic(vaisseau, incre){
                 $(this).append(vaisseau1.spriteXw);
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
             });
         }
 
@@ -156,15 +170,15 @@ function LignesClic(vaisseau, incre){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "ship")
+                if($(vaisseau).attr("class") === "shipXw")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship1")
+                else if($(vaisseau).attr("class") === "shipXw1")
                 {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
 
                 let arme = $(this).children().attr("class");
@@ -192,10 +206,8 @@ function LignesClic(vaisseau, incre){
                 $(this).append(vaisseau2.spriteXw);
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
             });
         }
 
@@ -205,15 +217,15 @@ function LignesClic(vaisseau, incre){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "ship")
+                if($(vaisseau).attr("class") === "shipXw")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship1")
+                else if($(vaisseau).attr("class") === "shipXw1")
                 {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
 
                 let arme = $(this).children().attr("class");
@@ -241,10 +253,8 @@ function LignesClic(vaisseau, incre){
                 $(this).append(vaisseau3.spriteXw);
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
             });
         }
 
@@ -254,15 +264,15 @@ function LignesClic(vaisseau, incre){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "ship")
+                if($(vaisseau).attr("class") === "shipXw")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship1")
+                else if($(vaisseau).attr("class") === "shipXw1")
                 {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
 
                 let arme = $(this).children().attr("class");
@@ -290,11 +300,8 @@ function LignesClic(vaisseau, incre){
                 $(this).append(vaisseau4.spriteXw);
                 $('td').off('click');
                 $('td').css('background', 'url(images/fondSW.png) fixed');
-                
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
             });
         }
 
@@ -339,10 +346,7 @@ function LignesHorzClic(vaisseau, incre){
             $(this).append($(vaisseau));
             $('td').css('background', 'url(images/fondSW.png) fixed');
             $('td').off('click');
-            LignesHorzClic("#xwing", 1);
-            LignesHorzClic("#xwing", -1);
-            LignesClic("#xwing", 1);
-            LignesClic("#xwing", -1);   
+            Joueur2();  
            });
    }
     // case occuppée par le vaisseau ennemi
@@ -365,13 +369,13 @@ function LignesHorzClic(vaisseau, incre){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "ship1")
+                if($(vaisseau).attr("class") === "shipXw1")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
 
                 let arme = $(this).children().attr("class");
@@ -399,10 +403,8 @@ function LignesHorzClic(vaisseau, incre){
                 $(this).append(vaisseauIni.spriteXw);
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
             });
         }
 
@@ -412,13 +414,13 @@ function LignesHorzClic(vaisseau, incre){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "ship")
+                if($(vaisseau).attr("class") === "shipXw")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
                 
                 let arme = $(this).children().attr("class");
@@ -447,10 +449,8 @@ function LignesHorzClic(vaisseau, incre){
                 $(this).append(vaisseau1.spriteXw);
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
             });
         }
 
@@ -460,15 +460,15 @@ function LignesHorzClic(vaisseau, incre){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "ship")
+                if($(vaisseau).attr("class") === "shipXw")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship1")
+                else if($(vaisseau).attr("class") === "shipXw1")
                 {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
 
                 let arme = $(this).children().attr("class");
@@ -496,10 +496,8 @@ function LignesHorzClic(vaisseau, incre){
                 $(this).append(vaisseau2.spriteXw);
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
             });
         }
 
@@ -510,15 +508,15 @@ function LignesHorzClic(vaisseau, incre){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "ship")
+                if($(vaisseau).attr("class") === "shipXw")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship1")
+                else if($(vaisseau).attr("class") === "shipXw1")
                 {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
 
                 let arme = $(this).children().attr("class");
@@ -545,10 +543,8 @@ function LignesHorzClic(vaisseau, incre){
                 
                 $(this).append(vaisseau3.spriteXw);
                 $('td').off('click');
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
             });
         }
 
@@ -559,15 +555,15 @@ function LignesHorzClic(vaisseau, incre){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "ship")
+                if($(vaisseau).attr("class") === "shipXw")
                 {$(vaisseauIni.spriteArmeXw).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship1")
+                else if($(vaisseau).attr("class") === "shipXw1")
                 {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship2")
+                else if($(vaisseau).attr("class") === "shipXw2")
                 {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship3")
+                else if($(vaisseau).attr("class") === "shipXw3")
                 {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "ship4")
+                else if($(vaisseau).attr("class") === "shipXw4")
                 {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
 
                 let arme = $(this).children().attr("class");
@@ -594,10 +590,8 @@ function LignesHorzClic(vaisseau, incre){
                 
                 $(this).append(vaisseau4.spriteXw);
                 $('td').off('click');
-                LignesHorzClic("#xwing", 1);
-                LignesHorzClic("#xwing", -1);
-                LignesClic("#xwing", 1);
-                LignesClic("#xwing", -1);
+                interfaceJ1();
+                Joueur2();
                 
             });
         }
@@ -615,30 +609,10 @@ function LignesHorzClic(vaisseau, incre){
     LignesHorzClic("#xwing", +1);
     LignesHorzClic("#xwing", -1);
 
-
+}
     
     
 
-     /* ce qu'il va falloir faire
-
-     incrementer et decrementer les cellules
-     empecher placement vaisseaux cote a cote
-     
-
-       si occupé par joueur: combattre{
-
-       }
-       resoudre bug selection cellules 
-       prendre en compte l'arme initiale une fois placée sur damier
-       resoudre bug quand arme remplacée, l'arme remisée est cliquable mais s'additionne avec vaisseau?
-
-       definir a qui est le tour, joueur1 ou joueur 2{
-
-       }
-       design html
-
-       */
-       
 
 
 

@@ -11,8 +11,25 @@ body{
     background: black;
 }
 
+span{
+    color: white;
+}
+p{
+    color: white;
+}
+
+#contenuJoueur{
+padding: 10px;
+}
+
+#joueur1{
+    display: flex;
+
+}
 section{
     display: flex;
+    width: 100%;
+    align-items: 
     margin: 10px;
 }
 
@@ -54,7 +71,7 @@ td
 {
     border: 1px solid rgba(131, 131, 131, 0.1);
     width: 60px;
-    height: 60px;  
+    height: 60px; 
 }
 
  
@@ -67,17 +84,29 @@ tr
 }
 
 /*joueurs*/
-
-#players{
+#sectionJoueur{
     display: flex;
     flex-direction: column;
-    width: 45%;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+#players{
+    width: 95%;
+    height: 500px;
+    border: 1px solid grey;  
+}
+
+#joueur{
+    display: flex;
+}
+.joueur1{
+    height: 200px;
+    width: 90%;
     border: 1px solid grey;
     margin: 30px;
 }
-
-.joueur{
-    display: flex;
+.joueur2{
     height: 200px;
     width: 90%;
     border: 1px solid grey;
@@ -88,4 +117,23 @@ tr
     height: 150px; 
 }
 
+/* messages*/
+
+#messages{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    height: 130px;
+    border: 1px solid grey;
+}
+
+#mess{
+    color: white;
+    text-align: center;
+    font-size: 25px;
+}
+#b1{
+    width: 100px;
+    margin: auto;
+}
 

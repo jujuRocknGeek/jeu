@@ -46,9 +46,11 @@ function ArmesPlace(){
         }
     }
 };
-
-// il faudra definir le debut du jeu le placement
-
+function RecuperationPlacement(x){
+    var cellule = $(x).parent('td').index();
+    var ligne = $(x).parent(cellule).parent('tr').index();
+    return {ligne, cellule};
+};
 RandomPlace(vaisseauIni.spriteXw);
 RandomPlace(vaisseauIni.spriteTie);
 AsteroidPlace();
