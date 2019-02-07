@@ -24,6 +24,25 @@ let arme = $("tr:eq("+RecuperationPlacement("#xwing").ligne+") td:eq("+Recuperat
             return;
     }
 }
+// petite phrase à ajouter
+    let textXw = ["C'est au tour de L'Alliance","Que la Force soit avec vous", "Poursuivez l'Empire coute que coute !","A votre tour Jedi !"];
+    let mess =  Math.floor(textXw.length * Math.random());
+    $("#mess").html(textXw[mess]); 
+
+//selection première case directe apres notre vaisseau pour chercher vaisseau ennemi
+    function FirstCell(){
+        var cellule = $("#xwing").parent('td').index();
+        var ligne = $("#xwing").parent(cellule).parent('tr').index();
+        let myShipPlus = $("tr:eq("+(ligne+1)+") td:eq("+cellule+")");
+        let myShipMoins = $("tr:eq("+(ligne-1)+") td:eq("+cellule+")");
+        console.log($("tr:eq("+(ligne+1)+") td:eq("+cellule+")").children().attr("id") == "tie" );
+        if($("tr:eq("+(ligne+1)+") td:eq("+cellule+")").children().attr("id") == "tie"  || 
+        $("tr:eq("+(ligne-1)+") td:eq("+cellule+")").children().attr("id") == "tie" ||
+        $("tr:eq("+ligne+") td:eq("+(cellule+1)+")").children().attr("id") == "tie" ||
+        $("tr:eq("+ligne+") td:eq("+(cellule-1)+")").children().attr("id") == "tie")
+        {setTimeout(fightJ1, 500);}
+    };
+FirstCell();
 
 // fonction qui selectionne les cases cliquables
 function LignesClic(vaisseau, incre){ 
@@ -45,13 +64,17 @@ function LignesClic(vaisseau, incre){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
 
         $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+
+            var sonTheme = document.getElementById('son5');
+            sonTheme.volume = 0.6;
+            sonTheme.play();
+
             $(".arm1").show();
             $(".arm2").show();
             $(".arm3").show();
             $(".arm4").show();
             $(".arm5").show();
             $(this).append($(vaisseau));
-            console.log($(this).append($(vaisseau)));
             $('td').css('background', 'url(images/fondSW.png) fixed');
             $('td').off('click');
             Joueur2();
@@ -60,9 +83,12 @@ function LignesClic(vaisseau, incre){
 
    
     // case occuppée par le vaisseau ennemi
-    else if ($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("id") === "xwing" || $("tr:eq("+numlign+") td:eq("+numCell+")").children().attr("id") === "tie"){
-
-        }
+    else if ($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("id") == "tie"){
+        $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
+        $("tr:eq("+numlign+")  td:eq("+numCell+")").on("click", function(){
+            fight();
+        });
+    }
 
     // case occuppée par un asteroide
     else if ($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "asteroid"){
@@ -75,6 +101,11 @@ function LignesClic(vaisseau, incre){
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm1"){
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 //on vide la cellule et déplace notre vaisseau
                 $(this).empty();
                 $(this).append($(vaisseau));
@@ -121,6 +152,11 @@ function LignesClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm2"){
             
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -167,6 +203,11 @@ function LignesClic(vaisseau, incre){
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm3"){
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -214,6 +255,11 @@ function LignesClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm4"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -261,6 +307,11 @@ function LignesClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm5"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -337,6 +388,10 @@ function LignesHorzClic(vaisseau, incre){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
 
         $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+            // son de deplacement
+            var sonTheme = document.getElementById('son5');
+            sonTheme.volume = 0.6;
+            sonTheme.play();
 
             $(".arm1").show();
             $(".arm2").show();
@@ -366,6 +421,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm1"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -411,6 +471,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm2"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -457,6 +522,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm3"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -504,6 +574,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm4"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $(this).empty();
                 $(this).append($(vaisseau));
@@ -551,6 +626,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm5"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son5');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $(this).empty();
                 $(this).append($(vaisseau));

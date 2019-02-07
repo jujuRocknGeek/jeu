@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="index.css"/>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
     <title>STAR WARS SPACE BATTLE</title>
 </head>
 
@@ -151,20 +152,35 @@
                 <p id="txtInterface">Nom du vaisseau : <span id="nomV1"></span></p>
                 <p id="txtInterface">Puissance de Dégats : <span id="degats1"></span></p>
                 <p id="txtInterface">Points de Vies : <span id="pv1"></span></p>
+                <div id="barreVie" class="bv1"><img src="images/barreXw.png" alt="barre de vie X-wing" id="bvimg1"></div>
+                <button id="btn" class="btnAtt1">ATTAQUEZ</button>
+                <button id="btn" class="btnDef1">DEFENDEZ</button>
             </div>    
         </div>
+
+        <div id="image"><p id="imageP"></p></div>
+
         <div id="joueur" class="joueur2">
                 <img src="images/pilotTieMin.jpg" alt="imge pilote empire" id="imgpilot2" class="imgPilot">
             <div id="contenuJoueur">
                 <p id="txtInterface">Nom du vaisseau : <span id="nomV2"></span></p>
                 <p id="txtInterface">Puissance de Dégats : <span id="degats2"></span></p>
                 <p id="txtInterface">Points de Vies : <span id="pv2"></span></p>
+                <div id="barreVie" class="bv2"><img src="images/barreXw.png" alt="barre de vie X-wing" id="bvimg2"></div>
+                <button id="btn" class="btnAtt2">ATTAQUEZ</button>
+                <button id="btn" class="btnDef2">DEFENDEZ</button>
             </div>
         </div>
     </div>
 </div>
 </section>
 
+    <audio controls src="sons/swTheme.mp3" id="son1" class="son"></audio>
+    <audio controls src="sons/tieFeu.mp3" id="son2" class="son"></audio>
+    <audio controls src="sons/xwFeu.mp3" id="son3" class="son"></audio>
+    <audio controls src="sons/tieVol.mp3" id="son4" class="son"></audio>
+    <audio controls src="sons/xwVol.mp3" id="son5" class="son"></audio>
+    <audio controls src="sons/shipExp.mp3" id="son6" class="son"></audio>
 
    <script src= "jquery-3.3.1.js"></script>
    <script src="joueurs.js"></script>
@@ -172,6 +188,7 @@
    <script src="startGame.js"></script>
    <script src="deplacementXw.js"></script>
    <script src="deplacementTie.js"></script>
+   <script src="fight.js"></script>
    
 </body>
 </html>

@@ -6,6 +6,9 @@
 
 }
 
+#conteneur{
+    margin: 20px 0px;
+}
 
 body{
     background: black;
@@ -16,21 +19,6 @@ span{
 }
 p{
     color: white;
-}
-
-#contenuJoueur{
-padding: 10px;
-}
-
-#joueur1{
-    display: flex;
-
-}
-section{
-    display: flex;
-    width: 100%;
-    align-items: 
-    margin: 10px;
 }
 
 /*entête du site*/
@@ -137,3 +125,58 @@ tr
     margin: auto;
 }
 
+#contenuJoueur{
+    padding: 10px;
+    }
+    
+    #joueur1{
+        display: flex;
+    
+    }
+    section{
+        display: flex;
+        width: 100%;
+        align-items: 
+        margin: 10px;
+    }
+
+/*barre de vie*/
+#barreVie{
+    width: 150px;
+    height: 20px;
+    border: 3px groove grey;
+}
+.bv1{
+    background: rgb(172, 0, 0);
+}
+
+.bv2{
+    background: rgb(172, 0, 0);
+}
+
+#bvimg1{
+width: 100%;
+background: rgb(0, 204, 51);
+}
+
+#bvimg2{
+width: 100%;
+background: rgb(0, 204, 51);
+}
+
+/*boutons*/
+#btn{
+    background-color: rgb(255, 0, 0);
+    Color:white;
+    font-weight: bold;
+    padding: 5px 20px;
+    border-radius: 1px;
+    cursor: pointer; 
+    box-shadow: 0 2px 4px 0 grey;
+    text-decoration: none;
+}
+
+
+.son{
+    visibility:hidden;
+}

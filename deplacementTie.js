@@ -1,5 +1,5 @@
 'use strict';
-function Joueur2(){
+function Joueur2(){ 
 //on cherche a savoir si il y a une arme sur la case afin de la cacher pour ne pas avoir doublon avec vaisseau
 if($("tr:eq("+RecuperationPlacement("#tie").ligne+") td:eq("+RecuperationPlacement("#tie").cellule+")").children().attr("id") == "arm"){
 let arme = $("tr:eq("+RecuperationPlacement("#tie").ligne+") td:eq("+RecuperationPlacement("#tie").cellule+")").children().attr("class");
@@ -24,6 +24,25 @@ let arme = $("tr:eq("+RecuperationPlacement("#tie").ligne+") td:eq("+Recuperatio
             return;
     }
 }
+//selection première case directe apres notre vaisseau pour chercher vaisseau ennemi
+function FirstCell(){
+    var cellule = $("#tie").parent('td').index();
+    var ligne = $("#tie").parent(cellule).parent('tr').index();
+    let myShipPlus = $("tr:eq("+(ligne+1)+") td:eq("+cellule+")");
+    let myShipMoins = $("tr:eq("+(ligne-1)+") td:eq("+cellule+")");
+    console.log($("tr:eq("+(ligne+1)+") td:eq("+cellule+")").children().attr("id") == "xwing" );
+    if($("tr:eq("+(ligne+1)+") td:eq("+cellule+")").children().attr("id") == "xwing"  || 
+    $("tr:eq("+(ligne-1)+") td:eq("+cellule+")").children().attr("id") == "xwing" ||
+    $("tr:eq("+ligne+") td:eq("+(cellule+1)+")").children().attr("id") == "xwing" ||
+    $("tr:eq("+ligne+") td:eq("+(cellule-1)+")").children().attr("id") == "xwing")
+    {setTimeout(fightJ2, 500);}
+};
+FirstCell();
+
+//texte de tour par tour
+let textTie = ["C'est à votre tour Seigneur Noir", "C'est au côté obscur de jouer", "Détruisez l'alliance !!", "Pourchassez ce Rebel", "au tour du Sith"];
+let mess =  Math.floor(textTie.length * Math.random());
+$("#mess").html(textTie[mess]); 
 
 // fonction qui selectionne les cases cliquables
 function LignesClic(vaisseau, incre){ 
@@ -46,13 +65,17 @@ function LignesClic(vaisseau, incre){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
        
         $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+            // son de deplacement
+            var sonTheme = document.getElementById('son4');
+            sonTheme.volume = 0.6;
+            sonTheme.play();
+
             $(".arm1").show();
             $(".arm2").show();
             $(".arm3").show();
             $(".arm4").show();
             $(".arm5").show();
             $(this).append($(vaisseau));
-            console.log($(this).append($(vaisseau)));
             $('td').css('background', 'url(images/fondSW.png) fixed');
             $('td').off('click');
             Joueur1();
@@ -73,6 +96,11 @@ function LignesClic(vaisseau, incre){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm1"){
+            // son de deplacement
+            var sonTheme = document.getElementById('son4');
+            sonTheme.volume = 0.6;
+            sonTheme.play();
+
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
                 //on vide la cellule et déplace notre vaisseau
                 $(this).empty();
@@ -120,6 +148,11 @@ function LignesClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm2"){
             
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -166,6 +199,11 @@ function LignesClic(vaisseau, incre){
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm3"){
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -213,6 +251,11 @@ function LignesClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm4"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -260,6 +303,11 @@ function LignesClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm5"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -336,6 +384,10 @@ function LignesHorzClic(vaisseau, incre){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
 
         $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+            // son de deplacement
+            var sonTheme = document.getElementById('son4');
+            sonTheme.volume = 0.6;
+            sonTheme.play();
 
             $(".arm1").show();
             $(".arm2").show();
@@ -365,6 +417,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm1"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -410,6 +467,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm2"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -456,6 +518,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm3"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $(this).empty();
                 $(this).append($(vaisseau));
 
@@ -503,6 +570,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm4"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $(this).empty();
                 $(this).append($(vaisseau));
@@ -550,6 +622,11 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm5"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                // son de deplacement
+                var sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $(this).empty();
                 $(this).append($(vaisseau));

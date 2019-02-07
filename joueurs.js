@@ -1,8 +1,7 @@
 // caractéristiques joueur de l'alliance
-let joueurXwing= {
+let joueurXw= {
     nom : 'blabla',
-    pv : 100,
-
+    pv : 100
 };
 
 // caractéristiques joueur de l'empire
