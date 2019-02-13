@@ -30,7 +30,7 @@ function Start(){
 Start();
 
 function interfaceJ1(){
-    let vaisseau = $("tr:eq("+RecuperationPlacement("#xwing").ligne+") td:eq("+RecuperationPlacement("#xwing").cellule+")").find("#xwing").attr("class");
+    let vaisseau = $("tr:eq("+recuperationPlacement("#xwing").ligne+") td:eq("+recuperationPlacement("#xwing").cellule+")").find("#xwing").attr("class");
     switch(vaisseau){
         case "shipXw":
             $("#nomV1").text(vaisseauIni.shipNameXw);
@@ -63,7 +63,7 @@ function interfaceJ1(){
 }
 
 function interfaceJ2(){
-    let vaisseau = $("tr:eq("+RecuperationPlacement("#tie").ligne+") td:eq("+RecuperationPlacement("#tie").cellule+")").find("#tie").attr("class");
+    let vaisseau = $("tr:eq("+recuperationPlacement("#tie").ligne+") td:eq("+recuperationPlacement("#tie").cellule+")").find("#tie").attr("class");
     switch(vaisseau){
         case "shipTie":
             $("#nomV2").text(vaisseauIni.shipNameTie);

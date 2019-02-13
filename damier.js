@@ -46,7 +46,7 @@ function ArmesPlace(){
         }
     }
 };
-function RecuperationPlacement(x){
+function recuperationPlacement(x){
     var cellule = $(x).parent('td').index();
     var ligne = $(x).parent(cellule).parent('tr').index();
     return {ligne, cellule};

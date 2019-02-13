@@ -1,8 +1,9 @@
 'use strict';
 function Joueur2(){ 
+let recupPlace = recuperationPlacement("#tie");
 //on cherche a savoir si il y a une arme sur la case afin de la cacher pour ne pas avoir doublon avec vaisseau
-if($("tr:eq("+RecuperationPlacement("#tie").ligne+") td:eq("+RecuperationPlacement("#tie").cellule+")").children().attr("id") == "arm"){
-let arme = $("tr:eq("+RecuperationPlacement("#tie").ligne+") td:eq("+RecuperationPlacement("#tie").cellule+")").children().attr("class");
+if($("tr:eq("+recupPlace.ligne+") td:eq("+recupPlace.cellule+")").children().attr("id") == "arm"){
+let arme = $("tr:eq("+recupPlace.ligne+") td:eq("+recupPlace.cellule+")").children().attr("class");
            
     switch(arme){
         case "arm1":
@@ -26,8 +27,8 @@ let arme = $("tr:eq("+RecuperationPlacement("#tie").ligne+") td:eq("+Recuperatio
 }
 //selection première case directe apres notre vaisseau pour chercher vaisseau ennemi
 function FirstCell(){
-    var cellule = $("#tie").parent('td').index();
-    var ligne = $("#tie").parent(cellule).parent('tr').index();
+    let cellule = $("#tie").parent('td').index();
+    let ligne = $("#tie").parent(cellule).parent('tr').index();
     let myShipPlus = $("tr:eq("+(ligne+1)+") td:eq("+cellule+")");
     let myShipMoins = $("tr:eq("+(ligne-1)+") td:eq("+cellule+")");
     console.log($("tr:eq("+(ligne+1)+") td:eq("+cellule+")").children().attr("id") == "xwing" );
@@ -45,11 +46,11 @@ let mess =  Math.floor(textTie.length * Math.random());
 $("#mess").html(textTie[mess]); 
 
 // fonction qui selectionne les cases cliquables
-function LignesClic(vaisseau, incre){ 
+function LignesClic(vaisseau, incre, angle){ 
     const nbTour = 3;
     let i = 0;
-    let numlign = RecuperationPlacement(vaisseau).ligne;
-    let numCell = RecuperationPlacement(vaisseau).cellule;
+    let numlign = recuperationPlacement(vaisseau).ligne;
+    let numCell = recuperationPlacement(vaisseau).cellule;
     
     for(i=1; i<=nbTour; i++){
 
@@ -65,8 +66,12 @@ function LignesClic(vaisseau, incre){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
        
         $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+            //defini l'angle de l'image
+            let image = document.getElementById("tie");
+            image.style.transform = angle;
+
             // son de deplacement
-            var sonTheme = document.getElementById('son4');
+            let sonTheme = document.getElementById('son4');
             sonTheme.volume = 0.6;
             sonTheme.play();
 
@@ -96,15 +101,22 @@ function LignesClic(vaisseau, incre){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm1"){
-            // son de deplacement
-            var sonTheme = document.getElementById('son4');
-            sonTheme.volume = 0.6;
-            sonTheme.play();
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                
                 //on vide la cellule et déplace notre vaisseau
                 $(this).empty();
                 $(this).append($(vaisseau));
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+ 
+                 // son de deplacement
+                 let sonTheme = document.getElementById('son4');
+                 sonTheme.volume = 0.6;
+                 sonTheme.play();
+
                 // changer  notre vaisseau en arme
                 if($(vaisseau).attr("class") === "shipTie1")
                 {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
@@ -148,13 +160,17 @@ function LignesClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm2"){
             
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-                // son de deplacement
-                var sonTheme = document.getElementById('son4');
-                sonTheme.volume = 0.6;
-                sonTheme.play();
-
                 $(this).empty();
                 $(this).append($(vaisseau));
+
+                //defini l'angle de l'image
+                let image = document.getElementById("tie");
+                image.style.transform = angle;
+
+                // son de deplacement
+                let sonTheme = document.getElementById('son4');
+                sonTheme.volume = 0.6;
+                sonTheme.play();
 
                 if($(vaisseau).attr("class") === "shipTie")
                 {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
@@ -199,8 +215,12 @@ function LignesClic(vaisseau, incre){
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm3"){
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                //defini l'angle de l'image
+                let image = document.getElementById("tie");
+                image.style.transform = angle;
+
                 // son de deplacement
-                var sonTheme = document.getElementById('son4');
+                let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
                 sonTheme.play();
 
@@ -251,8 +271,12 @@ function LignesClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm4"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                //defini l'angle de l'image
+                let image = document.getElementById("tie");
+                image.style.transform = angle;
+
                 // son de deplacement
-                var sonTheme = document.getElementById('son4');
+                let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
                 sonTheme.play();
 
@@ -303,8 +327,12 @@ function LignesClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm5"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                //defini l'angle de l'image
+                let image = document.getElementById("tie");
+                image.style.transform = angle;
+
                 // son de deplacement
-                var sonTheme = document.getElementById('son4');
+                let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
                 sonTheme.play();
 
@@ -361,12 +389,12 @@ function LignesClic(vaisseau, incre){
     }
 };
 
-function LignesHorzClic(vaisseau, incre){ 
+function LignesHorzClic(vaisseau, incre, angle){ 
     const nbTour = 3;
     let i = 0;
-    var x;
-    let numlign = RecuperationPlacement(vaisseau).ligne;
-    let numCell = RecuperationPlacement(vaisseau).cellule;
+    let x;
+    let numlign = recuperationPlacement(vaisseau).ligne;
+    let numCell = recuperationPlacement(vaisseau).cellule;
 
     for(i=1; i<=nbTour; i++){
             numCell += incre;
@@ -384,8 +412,12 @@ function LignesHorzClic(vaisseau, incre){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
 
         $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+            //defini l'angle de l'image
+            let image = document.getElementById("tie");
+            image.style.transform = angle;
+
             // son de deplacement
-            var sonTheme = document.getElementById('son4');
+            let sonTheme = document.getElementById('son4');
             sonTheme.volume = 0.6;
             sonTheme.play();
 
@@ -417,8 +449,12 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm1"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                //defini l'angle de l'image
+                let image = document.getElementById("tie");
+                image.style.transform = angle;
+
                 // son de deplacement
-                var sonTheme = document.getElementById('son4');
+                let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
                 sonTheme.play();
 
@@ -467,8 +503,12 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm2"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                //defini l'angle de l'image
+                let image = document.getElementById("tie");
+                image.style.transform = angle;
+
                 // son de deplacement
-                var sonTheme = document.getElementById('son4');
+                let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
                 sonTheme.play();
 
@@ -518,8 +558,12 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm3"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                //defini l'angle de l'image
+                let image = document.getElementById("tie");
+                image.style.transform = angle;
+
                 // son de deplacement
-                var sonTheme = document.getElementById('son4');
+                let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
                 sonTheme.play();
 
@@ -570,8 +614,12 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm4"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                //defini l'angle de l'image
+                let image = document.getElementById("tie");
+                image.style.transform = `rotate(${angle}deg)`;
+
                 // son de deplacement
-                var sonTheme = document.getElementById('son4');
+                let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
                 sonTheme.play();
 
@@ -622,8 +670,12 @@ function LignesHorzClic(vaisseau, incre){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm5"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
+                //defini l'angle de l'image
+                let image = document.getElementById("tie");
+                image.style.transform = angle;
+
                 // son de deplacement
-                var sonTheme = document.getElementById('son4');
+                let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
                 sonTheme.play();
 
@@ -681,8 +733,8 @@ function LignesHorzClic(vaisseau, incre){
     }
 };
 
-    LignesClic("#tie", +1);
-    LignesClic("#tie", -1);
-    LignesHorzClic("#tie", +1);
-    LignesHorzClic("#tie", -1);
+    LignesClic("#tie", +1, "rotate(90deg)");
+    LignesClic("#tie", -1, "rotate(270deg)");
+    LignesHorzClic("#tie", +1, "rotate(0deg)");
+    LignesHorzClic("#tie", -1, "rotate(180deg)");
 }
