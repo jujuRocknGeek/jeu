@@ -1,9 +1,11 @@
 'use strict';
-function Joueur2(){ 
-let recupPlace = recuperationPlacement("#tie");
+// selection des cases cliquables verticalement et leurs évènements
+function joueur2(){ 
 //on cherche a savoir si il y a une arme sur la case afin de la cacher pour ne pas avoir doublon avec vaisseau
-if($("tr:eq("+recupPlace.ligne+") td:eq("+recupPlace.cellule+")").children().attr("id") == "arm"){
-let arme = $("tr:eq("+recupPlace.ligne+") td:eq("+recupPlace.cellule+")").children().attr("class");
+let recupLigneTie = recuperationPlacement("#tie").ligne;
+let recupCellTie = recuperationPlacement("#tie").cellule;
+if($("tr:eq("+recupLigneTie+") td:eq("+recupCellTie+")").children().attr("id") == "arm"){
+let arme = $("tr:eq("+recupLigneTie+") td:eq("+recupCellTie+")").children().attr("class");
            
     switch(arme){
         case "arm1":
@@ -26,27 +28,27 @@ let arme = $("tr:eq("+recupPlace.ligne+") td:eq("+recupPlace.cellule+")").childr
     }
 }
 //selection première case directe apres notre vaisseau pour chercher vaisseau ennemi
-function FirstCell(){
+function firstCell(){
     let cellule = $("#tie").parent('td').index();
     let ligne = $("#tie").parent(cellule).parent('tr').index();
-    let myShipPlus = $("tr:eq("+(ligne+1)+") td:eq("+cellule+")");
-    let myShipMoins = $("tr:eq("+(ligne-1)+") td:eq("+cellule+")");
-    console.log($("tr:eq("+(ligne+1)+") td:eq("+cellule+")").children().attr("id") == "xwing" );
-    if($("tr:eq("+(ligne+1)+") td:eq("+cellule+")").children().attr("id") == "xwing"  || 
-    $("tr:eq("+(ligne-1)+") td:eq("+cellule+")").children().attr("id") == "xwing" ||
-    $("tr:eq("+ligne+") td:eq("+(cellule+1)+")").children().attr("id") == "xwing" ||
-    $("tr:eq("+ligne+") td:eq("+(cellule-1)+")").children().attr("id") == "xwing")
-    {setTimeout(fightJ2, 500);}
-};
-FirstCell();
+    let choiceSel =["tr:eq("+(ligne+1)+") td:eq("+cellule+")", "tr:eq("+(ligne-1)+") td:eq("+cellule+")", "tr:eq("+ligne+") td:eq("+(cellule+1)+")", "tr:eq("+ligne+") td:eq("+(cellule-1)+")"];
+    let i;
+        for(i=0; i<choiceSel.length; i++){
+            if($(choiceSel[i]).children().attr("id") == "xwing"){
+            setTimeout(fightJ2, 700);
+            }
+        }
+}
+firstCell();
 
 //texte de tour par tour
+$(".crawl").hide();
 let textTie = ["C'est à votre tour Seigneur Noir", "C'est au côté obscur de jouer", "Détruisez l'alliance !!", "Pourchassez ce Rebel", "au tour du Sith"];
 let mess =  Math.floor(textTie.length * Math.random());
-$("#mess").html(textTie[mess]); 
+$("#mess1").html(textTie[mess]); 
 
 // fonction qui selectionne les cases cliquables
-function LignesClic(vaisseau, incre, angle){ 
+function lignesClic(vaisseau, incre, angle){ 
     const nbTour = 3;
     let i = 0;
     let numlign = recuperationPlacement(vaisseau).ligne;
@@ -66,9 +68,6 @@ function LignesClic(vaisseau, incre, angle){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
        
         $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-            //defini l'angle de l'image
-            let image = document.getElementById("tie");
-            image.style.transform = angle;
 
             // son de deplacement
             let sonTheme = document.getElementById('son4');
@@ -81,14 +80,19 @@ function LignesClic(vaisseau, incre, angle){
             $(".arm4").show();
             $(".arm5").show();
             $(this).append($(vaisseau));
+
+            //defini l'angle de l'image
+            let image = document.getElementById("tie");
+            image.style.transform = angle;
+
             $('td').css('background', 'url(images/fondSW.png) fixed');
             $('td').off('click');
-            Joueur1();
+            joueur1();
            });
    }
     // case occuppée par le vaisseau ennemi
-    else if ($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("id") === "xwing" || $("tr:eq("+numlign+") td:eq("+numCell+")").children().attr("id") === "tie"){
-
+    else if ($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("id") === "xwing"){
+        return;
         }
 
     // case occuppée par un asteroide
@@ -107,28 +111,36 @@ function LignesClic(vaisseau, incre, angle){
                 //on vide la cellule et déplace notre vaisseau
                 $(this).empty();
                 $(this).append($(vaisseau));
-
-                 //defini l'angle de l'image
-                 let image = document.getElementById("tie");
-                 image.style.transform = angle;
  
                  // son de deplacement
                  let sonTheme = document.getElementById('son4');
                  sonTheme.volume = 0.6;
                  sonTheme.play();
 
-                // changer  notre vaisseau en arme
-                if($(vaisseau).attr("class") === "shipTie1")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
+               // change vaisseau en arme
+               let shipReplace = $(this).children().attr("class");
+               switch(shipReplace){
+                   case "shipTie":
+                   $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                       break;
+                   case "shipTie1" :
+                   $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                       break;
+                   case "shipTie2" :
+                   $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                       break;
+                   case "shipTie3" :
+                   $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                       break;
+                   case "shipTie4" :
+                   $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                       break;
+                   default : 
+                       return;
+               }
+
                 //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -150,10 +162,15 @@ function LignesClic(vaisseau, incre, angle){
                 }
                 // mettre le nouveau vaisseau
                 $(this).append(vaisseauIni.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
             });
         }
 
@@ -163,28 +180,35 @@ function LignesClic(vaisseau, incre, angle){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                //defini l'angle de l'image
-                let image = document.getElementById("tie");
-                image.style.transform = angle;
-
                 // son de deplacement
                 let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
                 sonTheme.play();
 
-                if($(vaisseau).attr("class") === "shipTie")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie1")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);};
+                // change vaisseau en arme
+                let shipReplace = $(this).children().attr("class");
+                switch(shipReplace){
+                    case "shipTie":
+                    $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                        break;
+                    case "shipTie1" :
+                    $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie2" :
+                    $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie3" :
+                    $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie4" :
+                    $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                        break;
+                    default : 
+                        return;
+                }
 
+                //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -206,18 +230,20 @@ function LignesClic(vaisseau, incre, angle){
                 }
 
                 $(this).append(vaisseau1.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
             });
         }
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm3"){
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-                //defini l'angle de l'image
-                let image = document.getElementById("tie");
-                image.style.transform = angle;
 
                 // son de deplacement
                 let sonTheme = document.getElementById('son4');
@@ -227,19 +253,30 @@ function LignesClic(vaisseau, incre, angle){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "shipTie")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie1")
-                {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
+                // change vaisseau en arme
+                let shipReplace = $(this).children().attr("class");
+                switch(shipReplace){
+                    case "shipTie":
+                    $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                        break;
+                    case "shipTie1" :
+                    $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie2" :
+                    $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie3" :
+                    $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie4" :
+                    $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                        break;
+                    default : 
+                        return;
+                }
 
+                //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -261,19 +298,21 @@ function LignesClic(vaisseau, incre, angle){
                 }
                 
                 $(this).append(vaisseau2.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
             });
         }
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm4"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-                //defini l'angle de l'image
-                let image = document.getElementById("tie");
-                image.style.transform = angle;
 
                 // son de deplacement
                 let sonTheme = document.getElementById('son4');
@@ -283,19 +322,30 @@ function LignesClic(vaisseau, incre, angle){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "shipTie")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie1")
-                {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
+                // change vaisseau en arme
+                let shipReplace = $(this).children().attr("class");
+                switch(shipReplace){
+                    case "shipTie":
+                    $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                        break;
+                    case "shipTie1" :
+                    $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie2" :
+                    $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie3" :
+                    $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie4" :
+                    $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                        break;
+                    default : 
+                        return;
+                }
 
+                //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -317,19 +367,21 @@ function LignesClic(vaisseau, incre, angle){
                 }
                 
                 $(this).append(vaisseau3.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
             });
         }
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm5"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-                //defini l'angle de l'image
-                let image = document.getElementById("tie");
-                image.style.transform = angle;
 
                 // son de deplacement
                 let sonTheme = document.getElementById('son4');
@@ -339,19 +391,30 @@ function LignesClic(vaisseau, incre, angle){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "shipTie")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie1")
-                {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
+                // change vaisseau en arme
+                let shipReplace = $(this).children().attr("class");
+                switch(shipReplace){
+                    case "shipTie":
+                    $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                        break;
+                    case "shipTie1" :
+                    $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie2" :
+                    $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie3" :
+                    $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie4" :
+                    $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                        break;
+                    default : 
+                        return;
+                }
 
+                //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -373,10 +436,15 @@ function LignesClic(vaisseau, incre, angle){
                 }
                 
                 $(this).append(vaisseau4.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').off('click');
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
             });
         }
 
@@ -389,7 +457,8 @@ function LignesClic(vaisseau, incre, angle){
     }
 };
 
-function LignesHorzClic(vaisseau, incre, angle){ 
+// selection cases cliquables horizontalement et leurs évènements au clic.
+function lignesHorzClic(vaisseau, incre, angle){ 
     const nbTour = 3;
     let i = 0;
     let x;
@@ -412,9 +481,6 @@ function LignesHorzClic(vaisseau, incre, angle){
         $("tr:eq("+numlign+") td:eq("+numCell+")").css('background', 'url(images/fondSWgrey.png) fixed');
 
         $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-            //defini l'angle de l'image
-            let image = document.getElementById("tie");
-            image.style.transform = angle;
 
             // son de deplacement
             let sonTheme = document.getElementById('son4');
@@ -427,14 +493,19 @@ function LignesHorzClic(vaisseau, incre, angle){
             $(".arm4").show();
             $(".arm5").show();
             $(this).append($(vaisseau));
+
+             //defini l'angle de l'image
+             let image = document.getElementById("tie");
+             image.style.transform = angle;
+
             $('td').css('background', 'url(images/fondSW.png) fixed');
             $('td').off('click');
-            Joueur1();   
+            joueur1();   
            });
    }
     // case occuppée par le vaisseau ennemi
-    else if ($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("id") === "xwing" || $("tr:eq("+numlign+") td:eq("+numCell+")").children().attr("id") === "tie"){
-
+    else if ($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("id") === "xwing"){
+        return;
         }
 
     // case occuppée par un asteroide
@@ -449,9 +520,6 @@ function LignesHorzClic(vaisseau, incre, angle){
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm1"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-                //defini l'angle de l'image
-                let image = document.getElementById("tie");
-                image.style.transform = angle;
 
                 // son de deplacement
                 let sonTheme = document.getElementById('son4');
@@ -461,17 +529,30 @@ function LignesHorzClic(vaisseau, incre, angle){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "shipTie1")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
+                // change vaisseau en arme
+                let shipReplace = $(this).children().attr("class");
+                switch(shipReplace){
+                    case "shipTie":
+                    $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                        break;
+                    case "shipTie1" :
+                    $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie2" :
+                    $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie3" :
+                    $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie4" :
+                    $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                        break;
+                    default : 
+                        return;
+                }
 
+                //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -493,19 +574,21 @@ function LignesHorzClic(vaisseau, incre, angle){
                 }
                 
                 $(this).append(vaisseauIni.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
             });
         }
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm2"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-                //defini l'angle de l'image
-                let image = document.getElementById("tie");
-                image.style.transform = angle;
 
                 // son de deplacement
                 let sonTheme = document.getElementById('son4');
@@ -515,17 +598,30 @@ function LignesHorzClic(vaisseau, incre, angle){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "shipTie")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
-                
+                // change vaisseau en arme
+                let shipReplace = $(this).children().attr("class");
+                switch(shipReplace){
+                    case "shipTie":
+                    $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                        break;
+                    case "shipTie1" :
+                    $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie2" :
+                    $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie3" :
+                    $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie4" :
+                    $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                        break;
+                    default : 
+                        return;
+                }
+
+                //cacher notre arme  
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -548,20 +644,21 @@ function LignesHorzClic(vaisseau, incre, angle){
                 
 
                 $(this).append(vaisseau1.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
             });
         }
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm3"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-                //defini l'angle de l'image
-                let image = document.getElementById("tie");
-                image.style.transform = angle;
-
                 // son de deplacement
                 let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
@@ -570,19 +667,30 @@ function LignesHorzClic(vaisseau, incre, angle){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "shipTie")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie1")
-                {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
+                // change vaisseau en arme
+                let shipReplace = $(this).children().attr("class");
+                switch(shipReplace){
+                    case "shipTie":
+                    $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                        break;
+                    case "shipTie1" :
+                    $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie2" :
+                    $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie3" :
+                    $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie4" :
+                    $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                        break;
+                    default : 
+                        return;
+                }
 
+                //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -604,20 +712,21 @@ function LignesHorzClic(vaisseau, incre, angle){
                 }
                 
                 $(this).append(vaisseau2.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').css('background', 'url(images/fondSW.png) fixed');
                 $('td').off('click');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
             });
         }
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm4"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-                //defini l'angle de l'image
-                let image = document.getElementById("tie");
-                image.style.transform = `rotate(${angle}deg)`;
-
                 // son de deplacement
                 let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
@@ -627,19 +736,30 @@ function LignesHorzClic(vaisseau, incre, angle){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "shipTie")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie1")
-                {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
+                // change vaisseau en arme
+                let shipReplace = $(this).children().attr("class");
+                switch(shipReplace){
+                    case "shipTie":
+                    $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                        break;
+                    case "shipTie1" :
+                    $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie2" :
+                    $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie3" :
+                    $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie4" :
+                    $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                        break;
+                    default : 
+                        return;
+                }
 
+                //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -661,19 +781,20 @@ function LignesHorzClic(vaisseau, incre, angle){
                 }
                 
                 $(this).append(vaisseau3.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').off('click');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
             });
         }
 
         if($("tr:eq("+numlign+")  td:eq("+numCell+")").children().attr("class") === "arm5"){
 
             $("tr:eq("+numlign+") td:eq("+numCell+")").click(function(){
-                //defini l'angle de l'image
-                let image = document.getElementById("tie");
-                image.style.transform = angle;
-
                 // son de deplacement
                 let sonTheme = document.getElementById('son4');
                 sonTheme.volume = 0.6;
@@ -683,19 +804,30 @@ function LignesHorzClic(vaisseau, incre, angle){
                 $(this).empty();
                 $(this).append($(vaisseau));
 
-                if($(vaisseau).attr("class") === "shipTie")
-                {$(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie1")
-                {$(vaisseau1.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie2")
-                {$(vaisseau2.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie3")
-                {$(vaisseau3.spriteArme).replaceAll(vaisseau);}
-                else if($(vaisseau).attr("class") === "shipTie4")
-                {$(vaisseau4.spriteArme).replaceAll(vaisseau);}
+                // change vaisseau en arme
+                let shipReplace = $(this).children().attr("class");
+                switch(shipReplace){
+                    case "shipTie":
+                    $(vaisseauIni.spriteArmeTie).replaceAll(vaisseau);
+                        break;
+                    case "shipTie1" :
+                    $(vaisseau1.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie2" :
+                    $(vaisseau2.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie3" :
+                    $(vaisseau3.spriteArme).replaceAll(vaisseau);
+                        break;
+                    case "shipTie4" :
+                    $(vaisseau4.spriteArme).replaceAll(vaisseau);
+                        break;
+                    default : 
+                        return;
+                }
 
+                //cacher notre arme
                 let arme = $(this).children().attr("class");
-           
                 switch(arme){
                     case "arm1":
                         $(".arm1").hide();
@@ -717,9 +849,14 @@ function LignesHorzClic(vaisseau, incre, angle){
                 }
                 
                 $(this).append(vaisseau4.spriteTie);
+
+                 //defini l'angle de l'image
+                 let image = document.getElementById("tie");
+                 image.style.transform = angle;
+
                 $('td').off('click');
                 interfaceJ2();
-                Joueur1();
+                joueur1();
                 
             });
         }
@@ -733,8 +870,8 @@ function LignesHorzClic(vaisseau, incre, angle){
     }
 };
 
-    LignesClic("#tie", +1, "rotate(90deg)");
-    LignesClic("#tie", -1, "rotate(270deg)");
-    LignesHorzClic("#tie", +1, "rotate(0deg)");
-    LignesHorzClic("#tie", -1, "rotate(180deg)");
+    lignesClic("#tie", +1, "rotate(90deg)");
+    lignesClic("#tie", -1, "rotate(270deg)");
+    lignesHorzClic("#tie", +1, "rotate(0deg)");
+    lignesHorzClic("#tie", -1, "rotate(180deg)");
 }

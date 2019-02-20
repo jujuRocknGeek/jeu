@@ -7,6 +7,8 @@
 }
 
 #conteneur{
+    display: flex;
+    width: 100%;
     margin: 20px 0px;
 }
 
@@ -22,9 +24,6 @@ p{
 }
 
 /*entête du site*/
-header{
-  
-}
 #logoSW{
     display: flex;
     justify-content: center;
@@ -46,13 +45,17 @@ header{
 
 #tab{
     display: flex;
-    width: 50%;
-    justify-content: center;
+    width: 60%;
 }
 #tabJeu
 {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     border-collapse: collapse;
-    margin: 70px 0px;
+    margin: auto;
 }
 
 td
@@ -77,12 +80,17 @@ tr
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 50%;
+    width: 40%;
 }
 #players{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 95%;
     height: 500px;
-    border: 1px solid grey;  
+    border: 1px solid #feda4a; 
+    margin: auto; 
 }
 
 #joueur{
@@ -91,14 +99,14 @@ tr
 .joueur1{
     height: 200px;
     width: 90%;
-    border: 1px solid grey;
-    margin: 30px;
+    border: 1px solid #feda4a;
+    margin: auto;
 }
 .joueur2{
     height: 200px;
     width: 90%;
-    border: 1px solid grey;
-    margin: 30px;
+    border: 1px solid #feda4a;
+    margin: auto;
 }
 
 .imgPilot{
@@ -107,22 +115,88 @@ tr
 
 /* messages*/
 
-#messages{
-    display: flex;
-    flex-direction: column;
-    width: 95%;
-    height: 130px;
-    border: 1px solid grey;
+.messages{
+  display: flex;
+  justify-content: center;
+  width: 95%;
+  border: 1px solid grey;
+  height: 200px;
+  perspective: 100px;
+  color: #feda4a;
+  font-family: 'Pathway Gothic One', sans-serif;
+  font-size: 300%;
+  font-weight: 400;
+  letter-spacing: 3px;
+  line-height: 100%;
+  text-align: justify;
+  overflow: hidden;
+  margin: 0px 0px 5px 0px;
 }
+.messages:after{
+    content:'';
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background:linear-gradient(top,rgba(0,0,0,1),rgba(0,0,0,0) 100%);
+    background:linear-gradient(to bottom,rgba(0,0,0,1),rgba(0,0,0,0) 100%);
+    pointer-events:none;
+}
+  
+  .crawl {
+    position: relative;
+    top: 9999px;
+    transform-origin: 50% 100%;
+    animation: crawl 160s linear;
+  }
+  
+  .crawl > .title {
+    font-size: 90%;
+    text-align: center;
+  }
+  
+  .crawl > .title h1 {
+    margin: 0 0 100px;
+    text-transform: uppercase;
+  }
+  
+  @keyframes crawl {
+    0% {
+      top: 0;
+      transform: rotateX(20deg)  translateZ(0);
+    }
+    100% { 
+      top: -6000px;
+      transform: rotateX(25deg) translateZ(-2500px);
+    }
+  }
+
+
+
+
 
 #mess{
-    color: white;
+    color: rgb(76, 197, 253);
     text-align: center;
-    font-size: 25px;
+    font-size: 30px;
+}
+#mess1{
+    color: #feda4a;
+    text-align: center;
+    margin: auto;
+    font-size: 40px;
 }
 #b1{
+
     width: 100px;
-    margin: auto;
+    height: 30px;
+    margin: 150px 10px;
+    background: #feda4a;
+    border: 1px solid white ;
+    font-size: 20px;
+    color: white;
+    border-radius: 30px;
 }
 
 #contenuJoueur{
@@ -145,9 +219,11 @@ tr
     width: 150px;
     height: 20px;
     border: 3px groove grey;
+    
 }
 .bv1{
     background: rgb(172, 0, 0);
+
 }
 
 .bv2{

@@ -1,20 +1,21 @@
+// fonction attaque du joueur1
 function fightJ1(){
-    console.log("fightJ1");
+    // on cache le damier et on affiche la nouvelle interface
     $("#tab").hide();
     $(".btnAtt1, .btnDef1, .btnAtt2, .btnDef2").show();
     $("#sectionJoueur").css("width", "100%");
     $(".joueur1, .joueur2").css({"width":"42%", "height":"200","margin":"30px 5px"});
-    $("#players").css({"display":"flex", "height":"250px"});
+    $("#players").css({"display":"flex", "height":"250px", "margin":"0 auto", "flex-direction":"row"});
     $("#image").css({
         "width":"200px",
         "height":"200px",
-        "border":"1px grey solid",
+        "border":"1px #feda4a solid",
         "margin":"30px 0px"});
 
         // petite phrase à ajouter
         let textXw = ["--ALLIANCE--<br> Quel beau tir !!","--ALLIANCE--<br>Que la Force soit avec vous", "--ALLIANCE--<br>Son Tie est presque totalement détruit ! Finissez en !","--ALLIANCE--<br>A votre tour Jedi !","--ALLIANCE--<br>En plein dans le mille !"];
         let mess =  Math.floor(textXw.length * Math.random());
-        $("#mess").html(textXw[mess]); 
+        $("#mess1").html(textXw[mess]); 
         
         // animation Gif
         let gifXw = ['<img src="images/xwGif.gif" height="180" width="180">', 
@@ -26,14 +27,15 @@ function fightJ1(){
 
         //changement couleur boutons
         $(".btnAtt1, .btnDef1").css("background-color", "green");
-
+            // au clic du bouton attaque
             $(".btnAtt1").on("click",function(){
-                // son de deplacement
+                // son de tir
             var sonTheme = document.getElementById('son3');
             sonTheme.volume = 0.9;
             sonTheme.play();
-                if(joueurTie.pv > 0 && joueurTie.pv <= 100){
 
+                if(joueurTie.pv > 0 && joueurTie.pv <= 100){
+                    //evolution des points de vies
                     let degat = $("#degats1").text();
                     switch(degat){
                     case "10": 
@@ -64,26 +66,27 @@ function fightJ1(){
                     default:
                     return;
                     }
+                    // si joueur adverse n'a plus de points
                     if(joueurTie.pv <= 0){
                         $("#imageP").empty();
                         $("#imageP").append('<img src="images/tieExp.gif" height="180" width="180">');
                         var sonTheme = document.getElementById('son6');
                         sonTheme.volume = 0.9;
                         sonTheme.play();
-                        $("#mess").html("--ALLIANCE--<br> VICTOIRE !!");
-                        $("#messages").css("background","green");
+                        $("#mess1").html("--ALLIANCE--<br> VICTOIRE !!");
+                        $(".messages").css("background","green");
                         $("#pv2").text("0");
                         $("button").hide();
                         return;
                             }
                 }   
-
+                //fin de tour passage joueur 2
                 $("button").off("click");
-                console.log(joueurTie.pv);
                 $(".btnAtt1, .btnDef1").css("background-color", "red");
                 fightJ2();
             });
 
+            // au clic du bouton défendre:
             $(".btnDef1").on("click",function(){
                 $(".btnAtt1, .btnDef1").css("background-color", "red");
                 $("button").off("click");
@@ -92,24 +95,24 @@ function fightJ1(){
             });
     return;
 }
-
+//fonction combat joueur2
 function fightJ2(){
-    console.log("fightJ2");
+    // on cache le damier et on affiche la nouvelle interface
     $("#tab").hide();
     $(".btnAtt1, .btnDef1, .btnAtt2, .btnDef2").show();
     $("#sectionJoueur").css("width", "100%");
     $(".joueur1, .joueur2").css({"width":"42%", "height":"200","margin":"30px 5px"});
-    $("#players").css({"display":"flex", "height":"250px"});
+    $("#players").css({"display":"flex", "height":"250px", "flex-direction":"row", "margin":"0 auto"});
     $("#image").css({
         "width":"200px",
         "height":"200px",
-        "border":"1px grey solid",
+        "border":"1px #feda4a solid",
         "margin":"30px 0px"});
 
         //texte de tour par tour
         let textTie = ["--EMPIRE--<br>DETRUISEZ CETTE VERMINE !", "--EMPIRE--<br>Vous êtes un Destructeur !", "--EMPIRE--<br>Détruisez l'alliance !!", "--EMPIRE--<br>Pourchassez ce Rebel", "--EMPIRE--<br>Au Prochain Tir l'Alliance aura failli !"];
         let mess =  Math.floor(textTie.length * Math.random());
-        $("#mess").html(textTie[mess]); 
+        $("#mess1").html(textTie[mess]); 
 
         //Animation gif
         let gifTie = ['<img src="images/tieVid.gif" height="180" width="180">', 
@@ -122,14 +125,15 @@ function fightJ2(){
 
             //changement couleur boutons
             $(".btnAtt2, .btnDef2").css("background-color", "green");
-
+                // au clic bouton Attaque:
                 $(".btnAtt2").on("click",function(){
+                    // son de tir
                     var sonTheme = document.getElementById('son2');
                     sonTheme.volume = 0.9;
                     sonTheme.play();
 
                 if(joueurXw.pv>0 && joueurXw.pv<=100){
-
+                    // modification des points de vies
                     let degat = $("#degats2").text();
                     switch(degat){
                     case "10": 
@@ -160,27 +164,28 @@ function fightJ2(){
                     default:
                     return;
                 }
+                // si joueur adverse n'a plus de points à perdu
                 if(joueurXw.pv<=0){
                     $("#imageP").empty();
                     $("#imageP").append('<img src="images/xwExp.gif" height="180" width="180">');
                     var sonTheme = document.getElementById('son6');
                     sonTheme.volume = 0.9;
                     sonTheme.play();
-                    $("#mess").html("--EMPIRE--<br> VICTOIRE !!");
-                    $("#messages").css("background","red");
+                    $("#mess1").html("--EMPIRE--<br> VICTOIRE !!");
+                    $(".messages").css("background","red");
                     $("#pv1").text("0");
                     $("button").hide();
                     return;
                     }
             }
            
-
+                // fin de tour et passage joueur 1
                 $("button").off("click");
                 $(".btnAtt2, .btnDef2").css("background-color", "red");
                 fightJ1();
                 return;
             });
-
+            // au clic du bouton défense
             $(".btnDef2").on("click",function(){
                 $(".btnAtt2, .btnDef2").css("background-color", "red");
                 $("button").off("click");
@@ -212,7 +217,7 @@ function defJ1(){
         "margin":"30px 0px"});
 
         // petite phrase à ajouter
-        $("#mess").html("--ALLIANCE-- Vous êtes affaiblis"); 
+        $("#mess1").html("--ALLIANCE-- Vous êtes affaiblis"); 
         
         // animation Gif
         let gifXw = ['<img src="images/xwGif.gif" height="180" width="180">', 
@@ -231,7 +236,7 @@ function defJ1(){
             sonTheme.volume = 0.9;
             sonTheme.play();
                 if(joueurTie.pv > 0 && joueurTie.pv <= 100){
-
+                    // inflige 50% des dégats initiaux
                     let degat = $("#degats1").text();
                     switch(degat){
                     case "10": 
@@ -268,8 +273,8 @@ function defJ1(){
                         var sonTheme = document.getElementById('son6');
                         sonTheme.volume = 0.9;
                         sonTheme.play();
-                        $("#mess").html("--ALLIANCE--<br> VICTOIRE !!");
-                        $("#messages").css("background","green");
+                        $("#mess1").html("--ALLIANCE--<br> VICTOIRE !!");
+                        $(".messages").css("background","green");
                         $("#pv2").text("0");
                         $("button").hide(); 
                         return;
@@ -306,7 +311,7 @@ function defJ2(){
         "margin":"30px 0px"});
 
         //texte de tour par tour
-        $("#mess").html("--EMPIRE-- Vous êtes affaibli"); 
+        $("#mess1").html("--EMPIRE-- Vous êtes affaibli"); 
 
         //Animation gif
         let gifTie = ['<img src="images/tieVid.gif" height="180" width="180">', 
@@ -319,14 +324,14 @@ function defJ2(){
 
             //changement couleur boutons
             $(".btnAtt2, .btnDef2").css("background-color", "green");
-
+                
                 $(".btnAtt2").on("click",function(){
                     var sonTheme = document.getElementById('son2');
                     sonTheme.volume = 0.9;
                     sonTheme.play();
 
                 if(joueurXw.pv>0 && joueurXw.pv<=100){
-
+                    // inflige 50% des dégats initiaux
                     let degat = $("#degats2").text();
                     switch(degat){
                     case "10": 
@@ -363,8 +368,8 @@ function defJ2(){
                     var sonTheme = document.getElementById('son6');
                     sonTheme.volume = 0.9;
                     sonTheme.play();
-                    $("#mess").html("--EMPIRE--<br> VICTOIRE !!");
-                        $("#messages").css("background","green");
+                    $("#mess1").html("--EMPIRE--<br> VICTOIRE !!");
+                        $(".messages").css("background","green");
                         $("#pv1").text("0");
                         $("button").hide(); 
                     return;

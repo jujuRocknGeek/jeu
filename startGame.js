@@ -1,33 +1,24 @@
-function Start(){
+function start(){
     $(".btnAtt1, .btnDef1, .btnAtt2, .btnDef2").hide();
-    let text = [ 
-        "STAR WARS<br>Bataille pour la Galaxie",
-        "Le Joueur 1 sera le pilote de L'Alliance Rebelle</br>Le joueur 2 sera le pilote de L'Empire Sith",
-        "Déplacez-vous de 1 à 3 cases verticalement ou horizontalement",
-        "Cherchez à améliorer votre vaisseau spatial et ensuite affrontez votre adversaire en duel à mort !",
-        "Etes-vous prêts au combat !? C'est parti pour le Joueur 1 !"];
     let i = 0; 
 
-        $("#mess").append("il était une fois dans une galaxie lointaine, très lointaine...");
+        $("#mess").append("il y a bien longtemps, dans une galaxie lointaine, très lointaine...");
         $("#b1").on('click', function(){
 
             var sonTheme = document.getElementById('son1');
             sonTheme.volume = 0.02;
             sonTheme.play();
-
-            $("#mess").html(text[i]); 
-            i++;
-            console.log($("#mess").text() == text[3])
-            if($("#mess").text() == text[4]){
+            $("#mess").hide();
+            $(".crawl").html('  <div class="title"><FONT size="7">STAR WARS<br><br></font></p><p style="color:#feda4a";>Episode IV</p><h1 style="color:#feda4a";>Champ De Battaille Pour La Galaxie</h1></div><p style="color:#feda4a";>La lutte pour le contrôle de la Galaxie est toujours intense entre l\'Alliance et l\'Empire.</p><p style="color:#feda4a";>Luke Skywalker, est en mission d\'éclaireur afin de trouver un itinéraire sûr, dans lequel doit passer un convoi secret qui contient une copie des plans de l\'étoile de la mort. Ce convoi doit cacher les plans au temple Jedi sur Coruscant au cas où l\'empire viendrait à retrouver le seul fichier que les rebelles ont pu voler sur Scarif.</p><p style="color:#feda4a";>Mais l\'Empire à aussi deployé tous ces chasseurs pour retrouver leur précieux plan. C\'est dans un champs d\'astéroide qu\'un chasseur Tie trouve l\'X-Wing rebelle.</p><p style="color:#feda4a";>Vous devrez vous battre au tour par tour. Récuperez des vaisseaux plus puissants afin d\'augmenter vos chances de victoire. Puis affrontez vous dans un duel à mort afin de reprendre le contrôle et restaurer la paix dans la Galaxie...</p><p style="color:#feda4a";>Prêts ? Cliquez Sur JOUER ! Que la Force soit avec vous !... </p>'); 
                 $("#b1").html("JOUEZ");
                     $("#b1").on('click', function(){
-                       Joueur1();
+                        $(".crawl").stop();
+                       joueur1();
                        $(this).hide();
                     });
-            }
         });
 };
-Start();
+start();
 
 function interfaceJ1(){
     let vaisseau = $("tr:eq("+recuperationPlacement("#xwing").ligne+") td:eq("+recuperationPlacement("#xwing").cellule+")").find("#xwing").attr("class");
